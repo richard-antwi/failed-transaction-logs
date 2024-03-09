@@ -29,9 +29,9 @@ connection.connect(err => {
 });
 
 // Default route to test if the server is up
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// app.get('/', (req, res) => {
+//   res.send('Hello World!');
+// });
 
 // Test API endpoint to check the connection to the database
 app.get('/api/test', (req, res) => {
