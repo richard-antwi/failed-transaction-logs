@@ -1,14 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
+const http = require('http');
 
 // Initialize the express app
 const app = express();
+app.use(cors()); // Use CORS to avoid cross-origin issues
 
-// Use CORS to avoid cross-origin issues when your front end tries to communicate with the back end
-app.use(cors());
+// Create HTTP server and wrap the Express app
+const server = http.createServer(app);
 
-// Configuration for your MySQL database connection
+// Setup socket.io to work with the HTTP server
+const io = require('socket.io')(server);
+
+// MySQL database connection configuration
 const dbConfig = {
   host: 'localhost',
   user: 'root',
@@ -16,10 +21,8 @@ const dbConfig = {
   database: 'failed_transaction'
 };
 
-// Create a MySQL database connection
+// Establish a connection to the MySQL database
 const connection = mysql.createConnection(dbConfig);
-
-// Connect to the MySQL database
 connection.connect(err => {
   if (err) {
     console.error('Error connecting to MySQL database:', err);
@@ -28,22 +31,25 @@ connection.connect(err => {
   console.log('Connected to MySQL database!');
 });
 
-// Default route to test if the server is up
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-// });
+// Socket.io connection handler
+io.on('connection', (socket) => {
+  console.log('Client connected');
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
 
-// Test API endpoint to check the connection to the database
+// API endpoint to check the connection to the database
 app.get('/api/test', (req, res) => {
-  // Execute a test query to the database
-  connection.query('SELECT * FROM  failed_trans_logs', (err, results) => {
+  connection.query('SELECT * FROM failed_trans_logs', (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
       res.status(500).send('Error executing query on the database');
       return;
     }
-    // If there are no errors, return the first result
     if (results.length > 0) {
+      io.emit('databaseUpdate', results[0]); // Emit event with the query result
       res.json(results[0]);
     } else {
       res.status(404).send('No data found');
@@ -51,10 +57,8 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-// Set the port for the server to listen on
+// Listen on the specified port, using the server instance instead of the app
 const PORT = process.env.PORT || 3001;
-
-// Start listening for requests
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server and Socket.io are running on port ${PORT}`);
 });
