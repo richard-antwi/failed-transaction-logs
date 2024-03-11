@@ -3,7 +3,8 @@ import io from 'socket.io-client'; // Import socket.io-client
 import './App.css';
 import DataTable from './components/DataTable';
 function App() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
+
 
   useEffect(() => {
     fetch('/api/test')
@@ -35,9 +36,50 @@ function App() {
             Header: 'ID',
             accessor: 'id',
         },
+        
         {
-            Header: 'Name',
-            accessor: 'name',
+          Header: 'Point of Faiure',
+          accessor: 'point_of_failure',
+        },
+        {
+          Header: 'Posted By',
+          accessor: 'posted_by',
+        },
+        {
+          Header: 'Activity Type',
+          accessor: 'activity_type',
+        },
+        {
+          Header: 'Error Code',
+          accessor: 'error_code',
+        },
+        {
+          Header: 'Error Message',
+          accessor: 'error_message',
+        },
+        {
+          Header: 'Source IP',
+          accessor: 'source_ip',
+        },
+        {
+          Header: 'Mac Address',
+          accessor: 'mac_address',
+        },
+        {
+          Header: 'Request Method',
+          accessor: 'request_method',
+        },
+        {
+          Header: 'Request URL',
+          accessor: 'request_url',
+        },
+        {
+          Header: 'Request Parameters',
+          accessor: 'request_parameters',
+        },
+        {
+          Header: 'Created At',
+          accessor: 'created_at',
         },
         // Add more columns as needed
     ],
@@ -57,20 +99,7 @@ function App() {
   return (
     <div>
       <h1>Test Data</h1>
-      {data ? (
-        <div>
-          <p><strong>Point of Failure:</strong> {data.point_of_failure}</p>
-          <p><strong>Activity Type:</strong> {data.activity_type}</p>
-          <p><strong>Error Code:</strong> {data.error_code}</p>
-          <p><strong>Error Message:</strong> {data.error_message}</p>
-          <p><strong>Source IP:</strong> {data.source_ip}</p>
-          <p><strong>MAC Address:</strong> {data.mac_address}</p>
-          <p><strong>Posted By:</strong> {data.posted_by || 'N/A'}</p>
-          <p><strong>Created At:</strong> {formatDate(data.created_at)}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      
              <DataTable columns={columns} data={data || []} />
 
     </div>
