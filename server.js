@@ -49,7 +49,7 @@ app.get('/api/test', (req, res) => {
       return;
     }
     if (results.length > 0) {
-      io.emit('databaseUpdate', results[0]); // Emit event with the query result
+      io.emit('databaseUpdate', results); // Emit event with the query result
       res.json(results[0]);
     } else {
       res.status(404).send('No data found');
