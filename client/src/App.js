@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client'; // Import socket.io-client
 import './App.css';
 import DataTable from './components/DataTable';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import MyTable from './components/MyTable'; 
 function App() {
   const [data, setData] = useState([]);
 
@@ -101,8 +103,13 @@ function App() {
       <h1>Test Data</h1>
       
              <DataTable columns={columns} data={data || []} />
+             <div className="App">
+      <MyTable columns={columns} data={data} />
+    </div>
+
 
     </div>
+    
   );
 }
 
