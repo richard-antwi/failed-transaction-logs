@@ -31,29 +31,44 @@ const MyTable = ({ data, columns }) => {
   // Styles to match the uploaded datatable image
   const headerStyle = {
     backgroundColor: '#007bff', // Using Bootstrap primary color
-    color: 'white'
+    color: 'white',
+    fontWeight: 'bold', // This makes the text bold
+    fontSize: '16px' 
   };
 
   return (
     <div className="container-fluid custom-container mt-5" style={{ maxWidth: '95%' }}>
       <div className="card">
-        <div className="card-header text-white bg-primary">
-          <h4 className="my-0">People</h4>
-          <select
-              className="form-control"
-              value={pageSize}
-              onChange={e => {
-                setPageSize(Number(e.target.value));
-              }}
-              style={{ width: 'auto' }}
-            >
-              {[10, 20, 30, 40, 50].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select>
-        </div>
+      <div className="card-header text-white bg-primary d-flex justify-content-between align-items-center">
+  <select 
+    className="form-control" 
+    value={pageSize} 
+    onChange={e => setPageSize(Number(e.target.value))} 
+    style={{ width: 'auto', marginRight: 'auto' }} // Added marginRight: 'auto' to push everything else to the right
+  >
+    {[10, 20, 30, 40, 50].map(size => (
+      <option key={size} value={size}>
+        {size} per page
+      </option>
+    ))}
+  </select>
+
+  <div className="search-container d-flex align-items-center">
+  <label htmlFor="datatable-search" className="form-label text-white mr-2 mb-0">Search: </label>
+    <input
+      id="datatable-search"
+      type="search"
+      className="form-control ml-3"
+      style={{ width: 'auto' }} // Adjust width as needed
+      // Add onChange handler to implement the search logic
+      onChange={e => {
+        // Implement your search logic here
+        console.log(e.target.value); // Example placeholder
+      }}
+    />
+  </div>
+</div>
+
         <div className="card-body p-0">
           <div className="table-responsive">
             <table {...getTableProps()} className="table table-bordered mb-0">

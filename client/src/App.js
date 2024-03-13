@@ -100,11 +100,11 @@ function App() {
 
   return (
     <div>
-      <h1>Test Data</h1>
       
-             <DataTable columns={columns} data={data || []} />
+      
+             {/* <DataTable columns={columns} data={data || []} /> */}
              <div className="App">
-      <MyTable columns={columns} data={data} />
+      <MyTable columns={columns} data={data || []} />
     </div>
 
 
