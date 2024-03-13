@@ -1,98 +1,57 @@
 import React from 'react';
-import { useTable, useSortBy, usePagination } from 'react-table';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.css'; // Assuming your custom CSS is here
 
+const MyTable = ({ data, onSearch, onAddPerson }) => {
+  // TODO: Implement search handling and add person functionality
+  const handleSearchChange = (event) => {
+    onSearch(event.target.value);
+  };
 
-const DataTable = ({ columns, data }) => {
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        prepareRow,
-        page,
-        canPreviousPage,
-        canNextPage,
-        pageOptions,
-        pageCount,
-        gotoPage,
-        nextPage,
-        previousPage,
-        setPageSize,
-        state: { pageIndex, pageSize },
-    } = useTable(
-        {
-            columns,
-            data,
-            initialState: { pageIndex: 0 },
-        },
-        useSortBy,
-        usePagination
-    );
+  return (
+    <div className="container bg-white my-5">
+      <div className="py-3">
+        <div className="d-flex justify-content-between">
+          <h2>People</h2>
+          <div>
+            <label htmlFor="searchInput" className="mr-2">Search:</label>
+            <input 
+              type="search" 
+              id="searchInput" 
+              className="form-control" 
+              style={{ width: 'auto' }} 
+              onChange={handleSearchChange} 
+            />
+          </div>
+          <button 
+            type="button" 
+            className="btn btn-success mb-2"
+            onClick={onAddPerson}
+          >
+            Add a person
+          </button>
+        </div>
+      </div>
 
-    return (
-        <>
-            <table {...getTableProps()}>
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                    {column.render('Header')}
-                                    <span>
-                                        {column.isSorted ? column.isSortedDesc ? ' 🔽' : ' 🔼' : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                    {page.map((row) => {
-                        prepareRow(row);
-                        return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map(cell => (
-                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                ))}
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            {/* Pagination */}
-            <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {'<<'}
-                </button>{' '}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {'<'}
-                </button>{' '}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {'>'}
-                </button>{' '}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                    {'>>'}
-                </button>{' '}
-                <span>
-                    Page{' '}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>{' '}
-                </span>
-                <select
-                    value={pageSize}
-                    onChange={e => {
-                        setPageSize(Number(e.target.value));
-                    }}
-                >
-                    {[10, 20, 30, 40, 50].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
-                        </option>
-                    ))}
-                </select>
-            </div>
-        </>
-    );
+      <table className="table table-bordered">
+        {/* Table Head */}
+        <thead>
+          {/* ... */}
+        </thead>
+        {/* Table Body */}
+        <tbody>
+          {data.map((row, index) => (
+            <tr key={index}>
+              {/* ... */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Pagination */}
+      {/* ... */}
+    </div>
+  );
 };
 
-export default DataTable;
+export default MyTable;
