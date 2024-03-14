@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client'; // Import socket.io-client
 import './App.css';
-import DataTable from './components/DataTable';
+// import DataTable from './components/DataTable';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import MyTable from './components/MyTable'; 
 function App() {
@@ -26,10 +26,10 @@ function App() {
   }, []);
   
   // Helper function to format the creation date
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  // const formatDate = (dateString) => {
+  //   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+  //   return new Date(dateString).toLocaleDateString(undefined, options);
+  // };
 
     // Define columns for the DataTable
   const columns = React.useMemo(
@@ -89,14 +89,14 @@ function App() {
   );
 
     // Mocked data for DataTable
-  const tableData = React.useMemo(
-    () => [
-        { id: 1, name: 'Jane Doe' },
-        { id: 2, name: 'John Doe' },
-        // Add more data as needed
-    ],
-    []
-  );
+  // const tableData = React.useMemo(
+  //   () => [
+  //       { id: 1, name: 'Jane Doe' },
+  //       { id: 2, name: 'John Doe' },
+  //       // Add more data as needed
+  //   ],
+  //   []
+  // );
 
   return (
     <div>

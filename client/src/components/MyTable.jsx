@@ -30,16 +30,26 @@ const MyTable = ({ data, columns }) => {
 
   // Styles to match the uploaded datatable image
   const headerStyle = {
-    backgroundColor: '#007bff', // Using Bootstrap primary color
-    color: 'white',
-    fontWeight: 'bold', // This makes the text bold
-    fontSize: '16px' 
+    backgroundColor: '#f8f9fa', // Light grey background
+    color: '#343a40', // Dark grey text for contrast
+    fontWeight: 'bold',
+    fontSize: '1.2em',
+    padding: '1em 0.5em',
+    position: 'sticky', 
+    top:'0',
+    index: '1', /* Ensures the header is above other content */
+    // backgroundColor: '#FFF',
+    // color:#99ccff;
   };
+  const tbodyStyle ={
+    borderCollapse: 'collapse',     
+  }
+  
 
   return (
     <div className="container-fluid custom-container mt-5" style={{ maxWidth: '95%' }}>
       <div className="card">
-      <div className="card-header text-white bg-primary d-flex justify-content-between align-items-center">
+      <div className="card-header text-white" style={{ backgroundColor: '#004085', display: 'flex', justifyContent: 'between', alignItems: 'center' }}>
   <select 
     className="form-control" 
     value={pageSize} 
@@ -54,7 +64,7 @@ const MyTable = ({ data, columns }) => {
   </select>
 
   <div className="search-container d-flex align-items-center">
-  <label htmlFor="datatable-search" className="form-label text-white mr-2 mb-0">Search: </label>
+  <label htmlFor="datatable-search" className="form-label text-white mr-3 mb-0" style={{ paddingRight: '8px' }}>Search: </label>
     <input
       id="datatable-search"
       type="search"
@@ -90,7 +100,7 @@ const MyTable = ({ data, columns }) => {
                   </tr>
                 ))}
               </thead>
-              <tbody {...getTableBodyProps()}>
+              <tbody style={tbodyStyle} {...getTableBodyProps()}>
                 {page.map(row => {
                   prepareRow(row);
                   return (
@@ -99,7 +109,7 @@ const MyTable = ({ data, columns }) => {
                         <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                       ))}
                     </tr>
-                  );
+                  ); 
                 })}
               </tbody>
             </table>

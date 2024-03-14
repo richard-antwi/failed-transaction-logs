@@ -1,26 +1,32 @@
 
 
 
-
-/* Add this to your CSS file */
-.sticky-header {
-  position: sticky;
-  top: 0;
-  background-color: white; /* Ensure the header is not transparent */
-  z-index: 1; /* Make sure the header is above other content */
-}
-/* In your CSS file */
 .custom-container {
-  max-width: 90%; /* Adjust the max-width as desired */
   margin-right: auto;
-  margin-left: auto; /* These margins keep the container centered */
+  margin-left: auto;
 }
 
-.headerStyle {
-  position: -webkit-sticky; /* For Safari */
-  position: sticky;
-  top: 0;
-  z-index: 1; /* Ensures the header is above other content */
-  background-color: #FFF; /* Or any background color; ensures text is readable over scrolled content */
+
+
+.table{
+  display:table;
+  border-collapse: collapse;
+  width:100%;
 }
 
+.table tr td{
+  border: 1px solid #000;
+  padding:10px;
+  text-align: left;
+}
+
+.table th{
+  font-weight: bold;
+ 
+
+
+}
+
+.table td:nth-child(even){
+  background-color: #f0f0f0;
+}
