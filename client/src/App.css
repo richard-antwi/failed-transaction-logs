@@ -1,29 +1,20 @@
-
-
-
 .custom-container {
   margin-right: auto;
   margin-left: auto;
 }
 
-
-
 .table{
-  display:table;
   border-collapse: collapse;
   width:100%;
 }
 
 .table tr td{
-  border: 1px solid #000;
   padding:10px;
   text-align: left;
 }
 
 .table th{
   font-weight: bold;
- 
-
 
 }
 

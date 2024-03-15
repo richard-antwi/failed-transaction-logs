@@ -30,30 +30,29 @@ const MyTable = ({ data, columns }) => {
 
   // Styles to match the uploaded datatable image
   const headerStyle = {
+    boxShadow: '2px 2px 2px #00008B',
     backgroundColor: '#f8f9fa', // Light grey background
     color: '#343a40', // Dark grey text for contrast
     fontWeight: 'bold',
     fontSize: '1.2em',
     padding: '1em 0.5em',
-    position: 'sticky', 
+    position: 'sticky',
     top:'0',
     index: '1', /* Ensures the header is above other content */
     // backgroundColor: '#FFF',
     // color:#99ccff;
   };
-  const tbodyStyle ={
-    borderCollapse: 'collapse',     
-  }
+
   
 
   return (
     <div className="container-fluid custom-container mt-5" style={{ maxWidth: '95%' }}>
       <div className="card">
       <div className="card-header text-white" style={{ backgroundColor: '#004085', display: 'flex', justifyContent: 'between', alignItems: 'center' }}>
-  <select 
-    className="form-control" 
-    value={pageSize} 
-    onChange={e => setPageSize(Number(e.target.value))} 
+  <select
+    className="form-control"
+    value={pageSize}
+    onChange={e => setPageSize(Number(e.target.value))}
     style={{ width: 'auto', marginRight: 'auto' }} // Added marginRight: 'auto' to push everything else to the right
   >
     {[10, 20, 30, 40, 50].map(size => (
@@ -62,7 +61,9 @@ const MyTable = ({ data, columns }) => {
       </option>
     ))}
   </select>
-
+      <div className="logtext" style={{marginRight :'5px', fontWeight: 'bold',fontSize: '1.2em',}}>
+        <h3>Failed Transaction Logs</h3>
+      </div>
   <div className="search-container d-flex align-items-center">
   <label htmlFor="datatable-search" className="form-label text-white mr-3 mb-0" style={{ paddingRight: '8px' }}>Search: </label>
     <input
@@ -100,7 +101,7 @@ const MyTable = ({ data, columns }) => {
                   </tr>
                 ))}
               </thead>
-              <tbody style={tbodyStyle} {...getTableBodyProps()}>
+              <tbody {...getTableBodyProps()}>
                 {page.map(row => {
                   prepareRow(row);
                   return (
@@ -109,7 +110,7 @@ const MyTable = ({ data, columns }) => {
                         <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                       ))}
                     </tr>
-                  ); 
+                  );
                 })}
               </tbody>
             </table>
