@@ -104,6 +104,7 @@ function App() {
       
              {/* <DataTable columns={columns} data={data || []} /> */}
              <div className="App">
+              
               <MyTable columns={columns} data={data || []} />
             </div>
 

@@ -1,10 +1,11 @@
 // MyTable.js
-import React from 'react';
+import React, { useState, useMemo} from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 const MyTable = ({ data, columns }) => {
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,9 +29,18 @@ const MyTable = ({ data, columns }) => {
     usePagination
   );
 
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredData = useMemo(() =>
+    data.filter(row =>
+      Object.values(row).some(value =>
+        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      )
+  ), [data, searchQuery]);
+
   // Styles to match the uploaded datatable image
   const headerStyle = {
-    boxShadow: '2px 2px 2px #00008B',
+    boxShadow: '0.2rem 0.2rem 0.2rem #00008B',
     backgroundColor: '#f8f9fa', // Light grey background
     color: '#343a40', // Dark grey text for contrast
     fontWeight: 'bold',
@@ -46,39 +56,35 @@ const MyTable = ({ data, columns }) => {
   
 
   return (
-    <div className="container-fluid custom-container mt-5" style={{ maxWidth: '95%' }}>
+    <div className="container-fluid custom-container mt-5" style={{ maxWidth: '90rem' }}>
       <div className="card">
-      <div className="card-header text-white" style={{ backgroundColor: '#004085', display: 'flex', justifyContent: 'between', alignItems: 'center' }}>
-  <select
-    className="form-control"
-    value={pageSize}
-    onChange={e => setPageSize(Number(e.target.value))}
-    style={{ width: 'auto', marginRight: 'auto' }} // Added marginRight: 'auto' to push everything else to the right
-  >
-    {[10, 20, 30, 40, 50].map(size => (
-      <option key={size} value={size}>
-        {size} per page
-      </option>
-    ))}
-  </select>
-      <div className="logtext" style={{marginRight :'5px', fontWeight: 'bold',fontSize: '1.2em',}}>
-        <h3>Failed Transaction Logs</h3>
+        <div className="card-header text-white" style={{ backgroundColor: '#004085' }}>
+          <div className ="row">
+            <div className ="col-4 text-left">
+              <select className="form-control" value={pageSize}onChange={e => setPageSize(Number(e.target.value))}style={{ width: 'auto' }} // Added marginRight: 'auto' to push everything else to the right
+                >
+                  {[10, 20, 30, 40, 50].map(size => (
+                    <option key={size} value={size}>{size} per page</option>
+                ))}
+              </select>
+              </div>
+            <div className="col-4 mr-3 text-center" style={{fontWeight: 'bold',fontSize: '1.2em'}}>
+              <h3>Failed Transaction Logs</h3>
+            </div>
+          <div className="col-4 d-flex justify-content-end">
+            <input
+             id="datatable-search"
+              type="search"
+               placeholder='Search' 
+               value= {searchQuery}
+               onChange={(e) => setSearchQuery(e.target.value)} 
+               className="form-control "style={{ width: '15vw' }}/>
+                   
+             
+        
+        </div>
+        </div>
       </div>
-  <div className="search-container d-flex align-items-center">
-  <label htmlFor="datatable-search" className="form-label text-white mr-3 mb-0" style={{ paddingRight: '8px' }}>Search: </label>
-    <input
-      id="datatable-search"
-      type="search"
-      className="form-control ml-3"
-      style={{ width: 'auto' }} // Adjust width as needed
-      // Add onChange handler to implement the search logic
-      onChange={e => {
-        // Implement your search logic here
-        console.log(e.target.value); // Example placeholder
-      }}
-    />
-  </div>
-</div>
 
         <div className="card-body p-0">
           <div className="table-responsive">
@@ -105,10 +111,12 @@ const MyTable = ({ data, columns }) => {
                 {page.map(row => {
                   prepareRow(row);
                   return (
+                    
                     <tr {...row.getRowProps()}>
-                      {row.cells.map(cell => (
+                      {row.cells.map(cell =>{ return (
                         <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                      ))}
+                      );
+                })}
                     </tr>
                   );
                 })}
