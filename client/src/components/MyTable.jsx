@@ -50,6 +50,7 @@ const MyTable = ({ data, columns }) => {
     textAlign: 'left',
     position: 'sticky',
     top:'0',
+   
     index: '1', /* Ensures the header is above other content */
     // backgroundColor: '#FFF',
     // color:#99ccff;

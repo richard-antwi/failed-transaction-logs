@@ -4,6 +4,7 @@ import './App.css';
 // import DataTable from './components/DataTable';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import MyTable from './components/MyTable'; 
+import InsertDataForm from './components/InsertDataForm';
 function App() {
   const [data, setData] = useState([]);
 
@@ -106,6 +107,8 @@ function App() {
              <div className="App">
               
               <MyTable columns={columns} data={data || []} />
+
+              <InsertDataForm/>
             </div>
 
 
