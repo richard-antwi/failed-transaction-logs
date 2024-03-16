@@ -5,6 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 const MyTable = ({ data, columns }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredData = useMemo(() =>
+    data.filter(row =>
+      Object.values(row).some(value =>
+        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      )
+  ), [data, searchQuery]);
 
   const {
     getTableProps,
@@ -22,21 +30,14 @@ const MyTable = ({ data, columns }) => {
   } = useTable(
     {
       columns,
-      data,
+      data: filteredData,
       initialState: { pageIndex: 0, pageSize: 10 },
     },
     useSortBy,
     usePagination
   );
 
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredData = useMemo(() =>
-    data.filter(row =>
-      Object.values(row).some(value =>
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      )
-  ), [data, searchQuery]);
+ 
 
   // Styles to match the uploaded datatable image
   const headerStyle = {
@@ -46,6 +47,7 @@ const MyTable = ({ data, columns }) => {
     fontWeight: 'bold',
     fontSize: '1.2em',
     padding: '1em 0.5em',
+    textAlign: 'left',
     position: 'sticky',
     top:'0',
     index: '1', /* Ensures the header is above other content */
@@ -122,6 +124,8 @@ const MyTable = ({ data, columns }) => {
                 })}
               </tbody>
             </table>
+            {console.log(searchQuery)}
+            {console.log(filteredData)}
           </div>
           <div className="pagination d-flex justify-content-between align-items-center p-3">
             <button className="btn btn-primary" onClick={() => previousPage()} disabled={!canPreviousPage}>

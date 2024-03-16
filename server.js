@@ -57,6 +57,28 @@
     });
   });
 
+
+  // API endpoint to insert data into the database
+app.post('/api/insert', (req, res) => {
+  const { id, point_of_failure, posted_by, activity_type, error_code, error_message,source_ip, mac_address, request_method, request_url, request_parameters } = req.body; // Assuming the request body contains transaction details
+
+  const insertQuery =
+'INSERT INTO failed_trans_logs (id, point_of_failure, posted_by, activity_type, error_code, error_message,source_ip, mac_address, request_method, request_url, request_parameters) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  connection.query(insertQuery, [id, point_of_failure, posted_by, activity_type, error_code, error_message,source_ip, mac_address, request_method, request_url, request_parameters], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err);
+      res.status(500).send('Error inserting data into the database');
+      return;
+    }
+
+    // Emit event to notify clients about the new data
+    io.emit('newData', { id, point_of_failure, posted_by, activity_type, error_code, error_message,source_ip, mac_address, request_method, request_url, request_parameters });
+
+    res.status(200).send('Data inserted successfully');
+  });
+});
+
+
   // Listen on the specified port, using the server instance instead of the app
   const PORT = process.env.PORT || 3001;
   server.listen(PORT, () => {
