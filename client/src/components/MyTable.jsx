@@ -46,14 +46,12 @@ const MyTable = ({ data, columns }) => {
     color: '#343a40', // Dark grey text for contrast
     fontWeight: 'bold',
     fontSize: '1.2em',
-    padding: '1em 0.5em',
+    padding: '1em 1em',
     textAlign: 'left',
     position: 'sticky',
     top:'0',
-   
     index: '1', /* Ensures the header is above other content */
-    // backgroundColor: '#FFF',
-    // color:#99ccff;
+    
   };
 
   
@@ -96,7 +94,7 @@ const MyTable = ({ data, columns }) => {
                 {headerGroups.map(headerGroup => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map(column => (
-                      <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <th className="text-nowrap"{...column.getHeaderProps(column.getSortByToggleProps())}>
                         {column.render('Header')}
                         <span>
                           {column.isSorted
