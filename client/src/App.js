@@ -15,7 +15,7 @@ function App() {
       .then((data) => setData(data))
       .catch((error) => console.error("There was an error fetching data from the API", error));
   }, []);
-
+  
   useEffect(() => {
     const socket = io('http://localhost:3001'); // Connect to your server
   
@@ -88,6 +88,7 @@ function App() {
    
 
   return (
+    <>
     <div>
       
       
@@ -96,16 +97,14 @@ function App() {
               
               <MyTable columns={columns} data={data || []} />
 
-              {/* <InsertDataForm/> */}
+              {/* <InsertDataForm /> */}
             </div>
 
 
     </div>
-    
+   </> 
   );
 }
 
 export default App;
-
-
 
