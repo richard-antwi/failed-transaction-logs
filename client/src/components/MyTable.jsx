@@ -7,6 +7,17 @@ import '../App.css';
 const MyTable = ({ data, columns }) => {
   const [searchQuery, setSearchQuery,setData] = useState('');
 
+  // Connect to the Socket.io server
+const socket = io();
+
+// Listen for the 'databaseUpdate' event
+socket.on('databaseUpdate', (data) => {
+    // Update the frontend UI with the new data
+    console.log('New data received:', data);
+    // Update the UI as per your requirements
+});
+
+
   const filteredData = useMemo(() =>
     data.filter(row =>
       Object.values(row).some(value =>
