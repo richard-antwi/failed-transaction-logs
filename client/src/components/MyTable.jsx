@@ -1,11 +1,11 @@
-// MyTable.js
-import React, { useState, useMemo} from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
+import io from 'socket.io-client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 const MyTable = ({ data, columns }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery,setData] = useState('');
 
   const filteredData = useMemo(() =>
     data.filter(row =>
@@ -13,6 +13,21 @@ const MyTable = ({ data, columns }) => {
         value.toString().toLowerCase().includes(searchQuery.toLowerCase())
       )
   ), [data, searchQuery]);
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:3001'); // Replace with your Socket.IO server URL
+  
+    newSocket.on('newData', (newEntry) => {
+      console.log('New data received:', newEntry);
+      // Update table data with the new entry
+      setData(prevData => [...prevData, newEntry]);
+    });
+  
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [setData]);
+  
 
   const {
     getTableProps,
@@ -109,19 +124,20 @@ const MyTable = ({ data, columns }) => {
                 ))}
               </thead>
               <tbody {...getTableBodyProps()}>
-                {page.map(row => {
-                  prepareRow(row);
-                  return (
-                    
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map(cell =>{ return (
-                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                      );
-                })}
-                    </tr>
-                  );
-                })}
-              </tbody>
+  {page.map((row, index) => {
+    prepareRow(row);
+    return (
+      <tr {...row.getRowProps()}>
+        <td>{index + 1}</td> {/* Generate a unique ID for each row */}
+        {row.cells.map(cell => (
+          <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+        ))}
+      </tr>
+    );
+  })}
+</tbody>
+
+              
             </table>
             {console.log(searchQuery)}
             {console.log(filteredData)}

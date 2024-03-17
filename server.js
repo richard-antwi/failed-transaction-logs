@@ -35,6 +35,7 @@ connection.connect(err => {
 // Socket.io connection handler
 io.on('connection', (socket) => {
   console.log('Client connected');
+
   // Handle disconnection
   socket.on('disconnect', () => {
     console.log('Client disconnected');
@@ -59,10 +60,10 @@ app.get('/api/test', (req, res) => {
 
 // API endpoint to handle data insertion
 app.post('/api/insert', (req, res) => {
-  const { id, point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters } = req.body;
+  const { point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters } = req.body;
 
-  const sql = 'INSERT INTO failed_trans_logs (id, point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  const values = [id, point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters];
+  const sql = 'INSERT INTO failed_trans_logs (point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  const values = [point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters];
 
   connection.query(sql, values, (error, results) => {
     if (error) {
@@ -70,7 +71,7 @@ app.post('/api/insert', (req, res) => {
       res.status(500).json({ message: 'Error inserting data' });
     } else {
       console.log('Data inserted successfully');
-      io.emit('newData', { id, point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters });
+      io.emit('databaseUpdate', { point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters });
       res.status(200).json({ message: 'Data inserted successfully' });
     }
   });
@@ -81,3 +82,5 @@ const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Server and Socket.io are running on port ${PORT}`);
 });
+
+module.exports = { app, io }; // Export the app and io instances for testing or further modularization

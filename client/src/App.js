@@ -4,7 +4,7 @@ import './App.css';
 // import DataTable from './components/DataTable';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import MyTable from './components/MyTable'; 
-// import InsertDataForm from './components/InsertDataForm';
+import InsertDataForm from './components/InsertDataForm';
 function App() {
   const [data, setData] = useState([]);
 
@@ -15,7 +15,7 @@ function App() {
       .then((data) => setData(data))
       .catch((error) => console.error("There was an error fetching data from the API", error));
   }, []);
-  
+
   useEffect(() => {
     const socket = io('http://localhost:3001'); // Connect to your server
   
@@ -33,7 +33,7 @@ function App() {
     () => [
         {
             Header: 'ID',
-            accessor: 'id',
+            accessor: '',
         },
         
         {
@@ -97,7 +97,7 @@ function App() {
               
               <MyTable columns={columns} data={data || []} />
 
-              {/* <InsertDataForm /> */}
+              <InsertDataForm />
             </div>
 
 
