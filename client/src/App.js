@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client'; // Import socket.io-client
+import io from 'socket.io-client';
 import './App.css';
-// import DataTable from './components/DataTable';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import MyTable from './components/MyTable'; 
 import InsertDataForm from './components/InsertDataForm';
+
 function App() {
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
     fetch('/api/test')
@@ -17,14 +16,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const socket = io('http://localhost:3001'); // Connect to your server
+    const socket = io(process.env.REACT_APP_SOCKET_IO_URL || 'http://localhost:3001');
   
-    socket.on('databaseUpdate', (data) => {
-      setData(data); // Update state with the new data
-    });
+    
+  socket.on('databaseUpdate', (updatedData) => {
+    setData(updatedData); 
+  });
   
-    return () => socket.disconnect(); // Cleanup on component unmount
+    return () => socket.disconnect();
   }, []);
+  
   
  
 

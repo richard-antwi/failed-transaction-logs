@@ -60,7 +60,7 @@ app.get('/api/test', (req, res) => {
 
 // API endpoint to handle data insertion
 
-app.post('/api/insert', (req, res) => {
+app.post('/api/test', (req, res) => {
   const { point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters } = req.body;
 
   const sql = 'INSERT INTO failed_trans_logs (point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
