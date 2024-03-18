@@ -37,7 +37,7 @@ function App() {
         },
         
         {
-          Header: 'Point of Faiure',
+          Header: 'Point of Failure',
           accessor: 'point_of_failure',
         },
         {
