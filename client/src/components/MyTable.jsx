@@ -1,44 +1,17 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
-import io from 'socket.io-client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 const MyTable = ({ data, columns }) => {
-  const [searchQuery, setSearchQuery,setData] = useState('');
-
-  // Connect to the Socket.io server
-const socket = io();
-
-// Listen for the 'databaseUpdate' event
-socket.on('databaseUpdate', (data) => {
-    // Update the frontend UI with the new data
-    console.log('New data received:', data);
-    // Update the UI as per your requirements
-});
-
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredData = useMemo(() =>
     data.filter(row =>
       Object.values(row).some(value =>
         value.toString().toLowerCase().includes(searchQuery.toLowerCase())
       )
-  ), [data, searchQuery]);
-
-  useEffect(() => {
-    const newSocket = io('http://localhost:3001'); // Replace with your Socket.IO server URL
-  
-    newSocket.on('newData', (newEntry) => {
-      console.log('New data received:', newEntry);
-      // Update table data with the new entry
-      setData(prevData => [...prevData, newEntry]);
-    });
-  
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [setData]);
-  
+    ), [data, searchQuery]);
 
   const {
     getTableProps,
@@ -52,7 +25,7 @@ socket.on('databaseUpdate', (data) => {
     canNextPage,
     pageOptions,
     setPageSize,
-    state: { pageIndex, pageSize }
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,

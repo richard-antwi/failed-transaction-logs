@@ -7,27 +7,40 @@ import InsertDataForm from './components/InsertDataForm';
 
 function App() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+
+ 
 
   useEffect(() => {
+    setLoading(true);
     fetch('/api/test')
       .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error("There was an error fetching data from the API", error));
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching data from the API", error);
+        setError(error);
+        setLoading(false);
+      });
   }, []);
-
+  
   useEffect(() => {
     const socket = io(process.env.REACT_APP_SOCKET_IO_URL || 'http://localhost:3001');
   
-    
-  socket.on('databaseUpdate', (updatedData) => {
-    setData(updatedData); 
+ 
+  socket.on('databaseUpdate', (newRecord) => {
+    setData(currentData => [...currentData, newRecord]);
   });
+  
+  
   
     return () => socket.disconnect();
   }, []);
   
-  
- 
 
     // Define columns for the DataTable
   const columns = React.useMemo(
@@ -86,25 +99,21 @@ function App() {
     []
   );
 
-   
-
   return (
     <>
-    <div>
-      
-      
-             {/* <DataTable columns={columns} data={data || []} /> */}
-             <div className="App">
-              
-              <MyTable columns={columns} data={data || []} />
-
-              <InsertDataForm />
-            </div>
-
-
-    </div>
-   </> 
+      <div>
+        {loading && <div>Loading...</div>}
+        {error && <div>Error fetching data: {error.message}</div>}
+        {!loading && !error && (
+          <div className="App">
+            <MyTable columns={columns} data={data || []} />
+            <InsertDataForm />
+          </div>
+        )}
+      </div>
+    </>
   );
+  
 }
 
 export default App;
