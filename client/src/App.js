@@ -7,47 +7,34 @@ import InsertDataForm from './components/InsertDataForm';
 
 function App() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-
- 
 
   useEffect(() => {
-    setLoading(true);
     fetch('/api/test')
       .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching data from the API", error);
-        setError(error);
-        setLoading(false);
-      });
+      .then((data) => setData(data))
+      .catch((error) => console.error("There was an error fetching data from the API", error));
   }, []);
-  
+
   useEffect(() => {
     const socket = io(process.env.REACT_APP_SOCKET_IO_URL || 'http://localhost:3001');
   
- 
-  socket.on('databaseUpdate', (newRecord) => {
-    setData(currentData => [...currentData, newRecord]);
+    
+  socket.on('databaseUpdate', (updatedData) => {
+    setData(updatedData); 
   });
-  
-  
   
     return () => socket.disconnect();
   }, []);
   
+  
+ 
 
     // Define columns for the DataTable
   const columns = React.useMemo(
     () => [
         {
             Header: 'ID',
-            accessor: '',
+            accessor:(_, rowIndex) => rowIndex + 1,
         },
         
         {
@@ -99,21 +86,25 @@ function App() {
     []
   );
 
+   
+
   return (
     <>
-      <div>
-        {loading && <div>Loading...</div>}
-        {error && <div>Error fetching data: {error.message}</div>}
-        {!loading && !error && (
-          <div className="App">
-            <MyTable columns={columns} data={data || []} />
-            <InsertDataForm />
-          </div>
-        )}
-      </div>
-    </>
+    <div>
+      
+      
+             {/* <DataTable columns={columns} data={data || []} /> */}
+             <div className="App">
+              
+              <MyTable columns={columns} data={data || []} />
+
+              <InsertDataForm />
+            </div>
+
+
+    </div>
+   </> 
   );
-  
 }
 
 export default App;

@@ -112,7 +112,7 @@ const MyTable = ({ data, columns }) => {
     prepareRow(row);
     return (
       <tr {...row.getRowProps()}>
-        <td>{index + 1}</td> {/* Generate a unique ID for each row */}
+         {/* Generate a unique ID for each row */}
         {row.cells.map(cell => (
           <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
         ))}
