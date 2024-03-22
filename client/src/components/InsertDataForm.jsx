@@ -66,7 +66,7 @@ const InsertDataForm = () => {
       <input type="text" placeholder="Request Url" value={request_url} onChange={(e) => setrequest_url(e.target.value)} />
       <input type="text" placeholder="RequestParameters" value={request_parameters} onChange={(e) => setrequest_parameters(e.target.value)} />
 
-      <button onClick={handleInsertData}>Insert Data</button>
+      <button button type="submit" button="true">Insert Data</button>
       
       </form>
     </div>

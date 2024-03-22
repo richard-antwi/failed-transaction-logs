@@ -3,16 +3,16 @@ const cors = require('cors');
 const mysql = require('mysql');
 const http = require('http');
 
-// Initialize the express app and middleware
 const app = express();
-app.use(express.json());
-app.use(cors());
-
-// Create HTTP server and integrate Socket.IO
 const server = http.createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
 
-// MySQL database connection configuration
 const dbConfig = {
   host: 'localhost',
   user: 'root',
@@ -20,7 +20,11 @@ const dbConfig = {
   database: 'failed_transaction'
 };
 
-// Using a connection pool instead of a single connection
+app.use(express.json());
+
+// Enable CORS for other API routes
+app.use(cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 }));
+
 const pool = mysql.createPool(dbConfig);
 
 // Verifies connection to the MySQL database
@@ -51,7 +55,7 @@ app.get('/api/test', (req, res) => {
 });
 
 // Handle data insertion and emit an update to all clients
-app.post('/api/test', (req, res) => {
+app.post('/api/insert', (req, res) => {
   const { point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters } = req.body;
   const sql = `INSERT INTO failed_trans_logs
     (point_of_failure, posted_by, activity_type, error_code, error_message, source_ip, mac_address, request_method, request_url, request_parameters)
